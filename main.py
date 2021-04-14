@@ -43,11 +43,13 @@ class Board:
         else:
             self.board[position] = True
         self.executed_moves.append(position)
+        self.current_turn += 1
 
     def undo_last(self):
         move_pos = self.executed_moves.pop()
 
         self.board[move_pos] = 0
+        self.current_turn -= 1
 
 
 def minimax(board, player_val):
@@ -60,3 +62,10 @@ def minimax(board, player_val):
     if board.is_tied():
         return 0
 
+    scores = []
+    for move in board.get_valid_moves():
+        board.make_move(move)
+        scores.append(minimax(board, player_val))
+        board.undo_last()
+
+    return max(scores) if player_val == board.current_turn % 2 else min(scores)
