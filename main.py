@@ -1,1 +1,2 @@
-Hello, World.
+class Board:
+    x = 5
