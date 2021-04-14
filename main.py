@@ -1,9 +1,11 @@
 # test comment
 class Board:
-    board = [0] * 16 # 0 for empty space, false for X, true for O
-    # if turn is even, then its X's turn, if turn is odd then O's turn
-    current_turn = 0
-    executed_moves = []
+
+    def __init__(self):
+        self.board = [0] * 16  # 0 for empty space, false for X, true for O
+        # if turn is even, then its X's turn, if turn is odd then O's turn
+        self.current_turn = 0
+        self.executed_moves = []
 
     # returns the current board
     def get_board(self):
@@ -21,19 +23,21 @@ class Board:
     # true means game is won by a player
     def is_won(self):
         # boolean sat formula
-        return
+        return True #TODO, have not made boolean formula yet
+
+
 
     # when game is won, returns who the winner is
     # 0 means X, 1 means O
     def winner(self):
-        if not(self.is_won()):
+        if not (self.is_won()):
             raise Exception('Winner method called on a game that is not over')
         else:
             return self.current_turn % 2
 
     # is this board in a tied state?
     def is_tied(self):
-        return (not self.is_winning()) and self.current_turn == 16
+        return (not self.is_won()) and self.current_turn == 16
 
     # make a move to change the current game state
     #
@@ -53,7 +57,6 @@ class Board:
 
 
 def minimax(board, player_val):
-
     if board.is_won():
         if board.winner() == player_val:
             return 1
@@ -69,3 +72,30 @@ def minimax(board, player_val):
         board.undo_last()
 
     return max(scores) if player_val == board.current_turn % 2 else min(scores)
+
+
+# test main method
+def main():
+    trial_board = Board()
+    trial_board.make_move(0)
+    trial_board.make_move(9)
+    trial_board.make_move(1)
+    trial_board.make_move(7)
+    trial_board.make_move(2)
+    trial_board.make_move(8)
+    trial_board.make_move(3)
+
+    print(minimax(trial_board, 0))
+
+
+main()
+
+
+
+
+
+
+
+
+
+
