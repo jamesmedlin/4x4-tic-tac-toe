@@ -1,4 +1,9 @@
 # test comment
+
+# 0|1|2|3
+# 4|5|6|7
+# 8|9|10|11
+# 12|13|14|15
 class Board:
 
     def __init__(self):
@@ -23,9 +28,53 @@ class Board:
     # true means game is won by a player
     def is_won(self):
         # boolean sat formula
-        return True #TODO, have not made boolean formula yet
+        curr_board = self.get_board()
 
+        return ((curr_board[0] == False and curr_board[1] == False and curr_board[2] == False and curr_board[
+            3] == False) or
+                (curr_board[0] == True and curr_board[1] == True and curr_board[2] == True and curr_board[3] == True) or
+                (curr_board[4] == False and curr_board[5] == False and curr_board[6] == False and curr_board[
+                    7] == False) or
+                (curr_board[4] == True and curr_board[5] == True and curr_board[6] == True and curr_board[7] == True) or
+                (curr_board[8] == False and curr_board[9] == False and curr_board[10] == False and curr_board[
+                    11] == False) or
+                (curr_board[8] == True and curr_board[9] == True and curr_board[10] == True and curr_board[
+                    11] == True) or
+                (curr_board[12] == False and curr_board[13] == False and curr_board[14] == False and curr_board[
+                    15] == False) or
+                (curr_board[12] == True and curr_board[13] == True and curr_board[14] == True and curr_board[
+                    15] == True) or
+                (curr_board[4] == False and curr_board[5] == False and curr_board[6] == False and curr_board[
+                    7] == False) or
+                (curr_board[4] == True and curr_board[5] == True and curr_board[6] == True and curr_board[7] == True) or
+                (curr_board[0] == False and curr_board[4] == False and curr_board[8] == False and curr_board[
+                    12] == False) or
+                (curr_board[0] == True and curr_board[4] == True and curr_board[8] == True and curr_board[
+                    12] == True) or
+                (curr_board[1] == False and curr_board[5] == False and curr_board[9] == False and curr_board[
+                    13] == False) or
+                (curr_board[1] == True and curr_board[5] == True and curr_board[9] == True and curr_board[
+                    13] == True) or
+                (curr_board[2] == False and curr_board[6] == False and curr_board[10] == False and curr_board[
+                    14] == False) or
+                (curr_board[2] == True and curr_board[6] == True and curr_board[10] == True and curr_board[
+                    14] == True) or
+                (curr_board[3] == False and curr_board[7] == False and curr_board[11] == False and curr_board[
+                    15] == False) or
+                (curr_board[3] == True and curr_board[7] == True and curr_board[11] == True and curr_board[
+                    15] == True) or
+                (curr_board[0] == False and curr_board[5] == False and curr_board[10] == False and curr_board[
+                    15] == False) or
+                (curr_board[0] == True and curr_board[5] == True and curr_board[10] == True and curr_board[
+                    15] == True) or
+                (curr_board[3] == False and curr_board[6] == False and curr_board[9] == False and curr_board[
+                    12] == False) or
+                (curr_board[3] == True and curr_board[6] == True and curr_board[9] == True and curr_board[12] == True))
 
+    # 0|1|2|3
+    # 4|5|6|7
+    # 8|9|10|11
+    # 12|13|14|15
 
     # when game is won, returns who the winner is
     # 0 means X, 1 means O
