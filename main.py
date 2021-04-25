@@ -4,7 +4,9 @@
 # 4|5|6|7
 # 8|9|10|11
 # 12|13|14|15
+
 class Board:
+
 
     def __init__(self):
         self.board = [0] * 16  # 0 for empty space, false for X, true for O
