@@ -9,13 +9,13 @@ class Board:
 
 
     def __init__(self):
-        self.board = ["."] * 9  # . for empty space, false for X, true for O
+        self.board = ['.'] * 9  # . for empty space, false for X, true for O
         # if turn is even, then its X's turn, if turn is odd then O's turn
         self.current_turn = 0
         self.executed_moves = []
 
     def reset_game(self):
-        self.board = ["."] * 9 # . for empty space, false for X, true for O
+        self.board = ['.'] * 9 # . for empty space, false for X, true for O
         # if turn is even, then its X's turn, if turn is odd then O's turn
         self.current_turn = 0
         self.executed_moves = []
@@ -37,12 +37,7 @@ class Board:
     def draw_board(self):
         board = self.board
         for i in range(0, 9):
-            text = "O"
-            if board[i] == False:
-                text = "X"
-            if board[i] == ".":
-                text = "."
-            print('{}| '.format(text), end =" ")
+            print('{}| '.format(board[i]), end =" ")
             if i % 3 == 2:
                 print()
         print()
@@ -58,50 +53,26 @@ class Board:
         curr_board = self.get_board()
 
         # return O if O wins
-        if ((curr_board[0] != ".") and (curr_board[0] == curr_board[1] == curr_board[2])):
-            if (not(curr_board[0])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[3] != ".") and (curr_board[3] == curr_board[4] == curr_board[5])):
-            if (not (curr_board[3])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[8] != ".") and (curr_board[6] == curr_board[7] == curr_board[8] )):
-            if (not (curr_board[8])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[0] != ".") and (curr_board[0] == curr_board[3] == curr_board[6])):
-            if (not (curr_board[0])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[1] != ".") and (curr_board[1] == curr_board[4] == curr_board[7] )):
-            if (not (curr_board[1])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[2] != ".") and (curr_board[2] == curr_board[5] == curr_board[8])):
-            if (not (curr_board[2])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[0] != ".") and (curr_board[0] == curr_board[4] == curr_board[8])):
-            if (not (curr_board[0])):
-                return "X"
-            else:
-                return "O"
-        if ((curr_board[2] != ".") and (curr_board[2] == curr_board[4] == curr_board[6])):
-            if (not (curr_board[2])):
-                return "X"
-            else:
-                return "O"
+        if ((curr_board[0] != '.') and (curr_board[0] == curr_board[1] == curr_board[2])):
+            return curr_board[0]
+        if ((curr_board[3] != '.') and (curr_board[3] == curr_board[4] == curr_board[5])):
+            return curr_board[3]
+        if ((curr_board[6] != '.') and (curr_board[6] == curr_board[7] == curr_board[8])):
+            return curr_board[6]
+        if ((curr_board[0] != '.') and (curr_board[0] == curr_board[3] == curr_board[6])):
+            return curr_board[0]
+        if ((curr_board[1] != '.') and (curr_board[1] == curr_board[4] == curr_board[7] )):
+            return curr_board[1]
+        if ((curr_board[2] != '.') and (curr_board[2] == curr_board[5] == curr_board[8])):
+            return curr_board[2]
+        if ((curr_board[0] != '.') and (curr_board[0] == curr_board[4] == curr_board[8])):
+            return curr_board[0]
+        if ((curr_board[2] != '.') and (curr_board[2] == curr_board[4] == curr_board[6])):
+            return curr_board[2]
 
         # if none above return, check if all spots are filled, if they are, then game is a tie
-        if "." in curr_board:
-            return False
+        if '.' in curr_board:
+            return None
         else:
             return True
 
@@ -135,7 +106,7 @@ class Board:
             if self.get_board()[i] == '.':
                 # On the empty field player 'O' makes a move and calls Min
                 # That's one branch of the game tree.
-                self.get_board()[i] = True
+                self.get_board()[i] = 'X'
                 (score_i, pos_i) = self.min_alpha_beta(alpha, beta)
                 if score_i > max_score:
                     max_score = score_i
@@ -167,7 +138,7 @@ class Board:
 
         for i in range(0, 9):
             if self.get_board()[i] == '.':
-                self.get_board()[i] = False
+                self.get_board()[i] = 'X'
                 (i_score, i_pos) = self.max_alpha_beta(alpha, beta)
                 if i_score < min_score:
                     min_score = i_score
@@ -187,7 +158,7 @@ class Board:
         self.draw_board()
         self.result = self.is_over()
 
-        if self.result != False:
+        if self.result != None:
             if self.result == 'X':
                 print('The winner is X!')
             elif self.result == 'O':
@@ -213,15 +184,15 @@ class Board:
                 pos = input_pos
 
                 if self.is_move_valid(pos):
-                    self.get_board()[pos] = False
+                    self.get_board()[pos] = 'X'
                     self.current_turn += 1
                     break
                 else:
                     print('The move is not valid! Try again.')
 
         else:
-            (score, pos) = self.max_alpha_beta(-2, 2)
-            self.get_board()[pos] = True
+            (score, i_pos) = self.max_alpha_beta(-2, 2)
+            self.get_board()[i_pos] = 'Os'
             self.current_turn += 1
 
 
