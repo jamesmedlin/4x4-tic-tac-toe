@@ -87,7 +87,7 @@ class Board:
             for j in range(0, 4):
                 if self.board[i][j] == '.':
                     self.board[i][j] = 'O'
-                    (m, min_i, in_j) = self.min_alpha_beta(alpha, beta)
+                    (m, min_i, in_j) = self.min(alpha, beta)
                     if m > max_score:
                         max_score = m
                         px = i
@@ -123,7 +123,7 @@ class Board:
             for j in range(0, 4):
                 if self.board[i][j] == '.':
                     self.board[i][j] = 'X'
-                    (m, max_i, max_j) = self.max_alpha_beta(alpha, beta)
+                    (m, max_i, max_j) = self.max(alpha, beta)
                     if m < min_score:
                         min_score = m
                         qx = i
@@ -158,7 +158,7 @@ class Board:
 
                 while True:
                     start = time.time()
-                    (m, qx, qy) = self.min_alpha_beta(-2, 2)
+                    (m, qx, qy) = self.min(-2, 2)
                     end = time.time()
                     print('Evaluation time: {}s'.format(round(end - start, 7)))
                     print('Recommended move: X = {}, Y = {}'.format(qx, qy))
@@ -177,13 +177,18 @@ class Board:
                         print('The move is not valid! Try again.')
 
             else:
-                (m, px, py) = self.max_alpha_beta(-2, 2)
+                (m, px, py) = self.max(-2, 2)
                 self.board[px][py] = 'O'
                 self.player_turn = 'X'
 
 def main():
     g = Board()
-    g.play_alpha_beta()
+    g.board[0][0] = 'X'
+    g.board[0][1] = 'O'
+    g.board[0][2] = 'X'
+    g.board[0][3] = 'O'
+
+    g.play()
 
 if __name__ == "__main__":
     main()
