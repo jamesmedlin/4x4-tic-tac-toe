@@ -1,11 +1,11 @@
 import time
 
-class Game:
+class Board:
     def __init__(self):
-        self.initialize_game()
+        self.reset_game()
 
-    def initialize_game(self):
-        self.current_state = [['.','.','.','.'],
+    def reset_game(self):
+        self.board = [['.','.','.','.'],
                               ['.','.','.','.'],
                               ['.','.','.','.'],
                               ['.','.','.','.']]
@@ -16,65 +16,65 @@ class Game:
     def draw_board(self):
         for i in range(0, 4):
             for j in range(0, 4):
-                print('{}|'.format(self.current_state[i][j]), end=" ")
+                print('{}|'.format(self.board[i][j]), end=" ")
             print()
         print()
 
     # Determines if the made move is a legal move
-    def is_valid(self, px, py):
+    def is_move_valid(self, px, py):
         if px < 0 or px > 3 or py < 0 or py > 3:
             return False
-        elif self.current_state[px][py] != '.':
+        elif self.board[px][py] != '.':
             return False
         else:
             return True
 
     # Checks if the game has ended and returns the winner in each case
-    def is_end(self):
+    def is_over(self):
         # Vertical win
         for i in range(0, 3):
-            if (self.current_state[0][i] != '.' and
-                    self.current_state[0][i] == self.current_state[1][i] and
-                    self.current_state[1][i] == self.current_state[2][i]):
-                return self.current_state[0][i]
+            if (self.board[0][i] != '.' and
+                    self.board[0][i] == self.board[1][i] and
+                    self.board[1][i] == self.board[2][i]):
+                return self.board[0][i]
 
         # Horizontal win
         for i in range(0, 3):
-            if (self.current_state[i] == ['X', 'X', 'X', 'X']):
+            if (self.board[i] == ['X', 'X', 'X', 'X']):
                 return 'X'
-            elif (self.current_state[i] == ['O', 'O', 'O', 'O']):
+            elif (self.board[i] == ['O', 'O', 'O', 'O']):
                 return 'O'
 
         # Main diagonal win
-        if (self.current_state[0][0] != '.' and
-                self.current_state[0][0] == self.current_state[1][1] and
-                self.current_state[0][0] == self.current_state[2][2] and
-                self.current_state[0][0] == self.current_state[3][3]):
-            return self.current_state[0][0]
+        if (self.board[0][0] != '.' and
+                self.board[0][0] == self.board[1][1] and
+                self.board[0][0] == self.board[2][2] and
+                self.board[0][0] == self.board[3][3]):
+            return self.board[0][0]
 
         # Second diagonal win
-        if (self.current_state[0][3] != '.' and
-                self.current_state[0][3] == self.current_state[1][2] and
-                self.current_state[0][3] == self.current_state[2][1] and
-                self.current_state[0][3] == self.current_state[3][0]):
-            return self.current_state[0][3]
+        if (self.board[0][3] != '.' and
+                self.board[0][3] == self.board[1][2] and
+                self.board[0][3] == self.board[2][1] and
+                self.board[0][3] == self.board[3][0]):
+            return self.board[0][3]
 
         # Is whole board full?
         for i in range(0, 4):
             for j in range(0, 4):
                 # There's an empty field, we continue the game
-                if (self.current_state[i][j] == '.'):
+                if (self.board[i][j] == '.'):
                     return None
 
         # It's a tie!
         return '.'
 
-    def max_alpha_beta(self, alpha, beta):
-        maxv = -2
+    def max(self, alpha, beta):
+        max_score = -2
         px = None
         py = None
 
-        result = self.is_end()
+        result = self.is_over()
 
         if result == 'X':
             return (-1, 0, 0)
@@ -85,32 +85,32 @@ class Game:
 
         for i in range(0, 4):
             for j in range(0, 4):
-                if self.current_state[i][j] == '.':
-                    self.current_state[i][j] = 'O'
+                if self.board[i][j] == '.':
+                    self.board[i][j] = 'O'
                     (m, min_i, in_j) = self.min_alpha_beta(alpha, beta)
-                    if m > maxv:
-                        maxv = m
+                    if m > max_score:
+                        max_score = m
                         px = i
                         py = j
-                    self.current_state[i][j] = '.'
+                    self.board[i][j] = '.'
 
                     # Next two ifs in Max and Min are the only difference between regular algorithm and minimax
-                    if maxv >= beta:
-                        return (maxv, px, py)
+                    if max_score >= beta:
+                        return (max_score, px, py)
 
-                    if maxv > alpha:
-                        alpha = maxv
+                    if max_score > alpha:
+                        alpha = max_score
 
-        return (maxv, px, py)
+        return (max_score, px, py)
 
-    def min_alpha_beta(self, alpha, beta):
+    def min(self, alpha, beta):
 
-        minv = 2
+        min_score = 2
 
         qx = None
         qy = None
 
-        result = self.is_end()
+        result = self.is_over()
 
         if result == 'X':
             return (-1, 0, 0)
@@ -121,27 +121,27 @@ class Game:
 
         for i in range(0, 4):
             for j in range(0, 4):
-                if self.current_state[i][j] == '.':
-                    self.current_state[i][j] = 'X'
+                if self.board[i][j] == '.':
+                    self.board[i][j] = 'X'
                     (m, max_i, max_j) = self.max_alpha_beta(alpha, beta)
-                    if m < minv:
-                        minv = m
+                    if m < min_score:
+                        min_score = m
                         qx = i
                         qy = j
-                    self.current_state[i][j] = '.'
+                    self.board[i][j] = '.'
 
-                    if minv <= alpha:
-                        return (minv, qx, qy)
+                    if min_score <= alpha:
+                        return (min_score, qx, qy)
 
-                    if minv < beta:
-                        beta = minv
+                    if min_score < beta:
+                        beta = min_score
 
-        return (minv, qx, qy)
+        return (min_score, qx, qy)
 
-    def play_alpha_beta(self):
+    def play(self):
         while True:
             self.draw_board()
-            self.result = self.is_end()
+            self.result = self.is_over()
 
             if self.result != None:
                 if self.result == 'X':
@@ -151,7 +151,7 @@ class Game:
                 elif self.result == '.':
                     print("It's a tie!")
 
-                self.initialize_game()
+                self.reset_game()
                 return
 
             if self.player_turn == 'X':
@@ -169,8 +169,8 @@ class Game:
                     qx = px
                     qy = py
 
-                    if self.is_valid(px, py):
-                        self.current_state[px][py] = 'X'
+                    if self.is_move_valid(px, py):
+                        self.board[px][py] = 'X'
                         self.player_turn = 'O'
                         break
                     else:
@@ -178,11 +178,11 @@ class Game:
 
             else:
                 (m, px, py) = self.max_alpha_beta(-2, 2)
-                self.current_state[px][py] = 'O'
+                self.board[px][py] = 'O'
                 self.player_turn = 'X'
 
 def main():
-    g = Game()
+    g = Board()
     g.play_alpha_beta()
 
 if __name__ == "__main__":
