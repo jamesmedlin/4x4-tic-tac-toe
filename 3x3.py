@@ -88,7 +88,7 @@ class Board:
                 return "X"
             else:
                 return "O"
-        if ((curr_board[0] != ".") and (curr_board[0] == curr_board[4]) and (curr_board[8])):
+        if ((curr_board[0] != ".") and (curr_board[0] == curr_board[4] == curr_board[8])):
             if (not (curr_board[0])):
                 return "X"
             else:
@@ -135,7 +135,7 @@ class Board:
             if self.get_board()[i] == '.':
                 # On the empty field player 'O' makes a move and calls Min
                 # That's one branch of the game tree.
-                self.get_board()[i] = 'O'
+                self.get_board()[i] = True
                 (score_i, pos_i) = self.min_alpha_beta(alpha, beta)
                 if score_i > max_score:
                     max_score = score_i
@@ -167,7 +167,7 @@ class Board:
 
         for i in range(0, 9):
             if self.get_board()[i] == '.':
-                self.get_board()[i] = 'X'
+                self.get_board()[i] = False
                 (i_score, i_pos) = self.max_alpha_beta(alpha, beta)
                 if i_score < min_score:
                     min_score = i_score
@@ -213,7 +213,7 @@ class Board:
                 pos = input_pos
 
                 if self.is_move_valid(pos):
-                    self.get_board()[pos] = 'X'
+                    self.get_board()[pos] = False
                     self.current_turn += 1
                     break
                 else:
@@ -221,20 +221,21 @@ class Board:
 
         else:
             (score, pos) = self.max_alpha_beta(-2, 2)
-            self.get_board()[pos] = 'O'
+            self.get_board()[pos] = True
             self.current_turn += 1
 
 
 # test main method
 def main():
     g = Board()
+    """
     g.get_board()[0] = True
     g.get_board()[1] = True
     g.get_board()[4] = False
     g.get_board()[5] = True
     g.get_board()[2] = False
     g.get_board()[8] = False
-
+    """
 
     g.play_alpha_beta()
 
