@@ -7,7 +7,7 @@ class Board:
 
    def reset_game(self):
        # The tic-tac-toe board will be represented as a 2d array. Blanks will be represented as .'s for
-       # graphical display and X's and O's for the moves.
+       # graphical display and False = X's and True = O's for the moves.
        self.board = [['.', '.', '.', '.'],
                      ['.', '.', '.', '.'],
                      ['.', '.', '.', '.'],
@@ -37,34 +37,81 @@ class Board:
    # Return cases: X - X wins, O - O wins, . - draw, None - game not finished
    def is_over(self):
 
-       # Checking combinations of horizontal wins
+       boolean_array = [['.', '.', '.', '.'],
+                     ['.', '.', '.', '.'],
+                     ['.', '.', '.', '.'],
+                     ['.', '.', '.', '.']]
+
        for i in range(0, 4):
-           if self.board[i] == ['O', 'O', 'O', 'O']:
-               return 'O'
-           elif self.board[i] == ['X', 'X', 'X', 'X']:
-               return 'X'
+           for j in range(0, 4):
+               if self.board[i][j] == 'X':
+                   boolean_array[i][j] = False
+               if self.board[i][j] == 'O':
+                   boolean_array[i][j] = True
+               else:
+                   boolean_array[i][j] = '.'
 
-
-       # Checking all vertical win conditions
-       for i in range(0, 4):
-           if (self.board[0][i] != '.' and
-                   self.board[0][i] == self.board[1][i] and
-                   self.board[1][i] == self.board[2][i]):
-               return self.board[0][i]
-
-       # First diagonal check
-       if (self.board[0][3] != '.' and
-               self.board[0][3] == self.board[1][2] and
-               self.board[0][3] == self.board[2][1] and
-               self.board[0][3] == self.board[3][0]):
-           return self.board[0][3]
-
-       # Second diagonal check
-       if (self.board[0][0] != '.' and
-               self.board[0][0] == self.board[1][1] and
-               self.board[0][0] == self.board[2][2] and
-               self.board[0][0] == self.board[3][3]):
-           return self.board[0][0]
+               # return O if O wins
+               if ((boolean_array[0][0] != ".") and
+                       (boolean_array[0][0] == boolean_array[0][1] == boolean_array[0][2] == boolean_array[0][3])):
+                   if (not (boolean_array[0][0])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[1][0] != ".") and
+                       (boolean_array[1][0] == boolean_array[1][1] == boolean_array[1][2] == boolean_array[1][3])):
+                   if (not (boolean_array[1][0])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[2][0] != ".") and
+                       (boolean_array[2][0] == boolean_array[2][1] == boolean_array[2][2] == boolean_array[2][3])):
+                   if (not (boolean_array[2][0])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[3][0] != ".") and
+                       (boolean_array[3][0] == boolean_array[3][1] == boolean_array[3][2] == boolean_array[3][3])):
+                   if (not (boolean_array[3][0])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[0][0] != ".")
+                       and (boolean_array[0][0] == boolean_array[1][0] == boolean_array[2][0] == boolean_array[3][0])):
+                   if (not (boolean_array[0][0])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[0][1] != ".") and
+                       (boolean_array[0][1] == boolean_array[1][1] == boolean_array[2][1] == boolean_array[3][1])):
+                   if (not (boolean_array[0][1])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[0][2] != ".") and
+                       (boolean_array[0][2] == boolean_array[1][2] == (boolean_array[2][2]) == (boolean_array[2][3]))):
+                   if (not (boolean_array[0][2])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[0][3] != ".") and
+                       (boolean_array[0][3] == boolean_array[1][3] == boolean_array[2][3] == boolean_array[3][3])):
+                   if (not (boolean_array[0][3])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[0][0] != ".") and
+                       (boolean_array[0][0] == boolean_array[1][1] == boolean_array[2][2] == boolean_array[3][3])):
+                   if (not (boolean_array[0][0])):
+                       return "X"
+                   else:
+                       return "O"
+               if ((boolean_array[0][3] != ".") and
+                       (boolean_array[0][3] == boolean_array[1][2] == boolean_array[2][1] == boolean_array[3][0])):
+                   if (not (boolean_array[3])):
+                       return "X"
+                   else:
+                       return "O"
 
        # Draw check: if nobody has won yet, check if board has any empty spaces left
        for i in range(0, 4):
@@ -205,12 +252,12 @@ class Board:
 def main():
    # Initialize the board and load up a few moves (moves can be changed)
    g = Board()
-   """
+
    g.board[0][0] = 'X'
    g.board[0][1] = 'O'
    g.board[0][2] = 'X'
    g.board[0][3] = 'O'
-    """
+
    g.play()
 
 
