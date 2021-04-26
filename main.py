@@ -1,4 +1,4 @@
-# test comment
+import time
 
 # 0|1|2|3
 # 4|5|6|7
@@ -9,6 +9,12 @@ class Board:
 
 
     def __init__(self):
+        self.board = ["."] * 16  # . for empty space, false for X, true for O
+        # if turn is even, then its X's turn, if turn is odd then O's turn
+        self.current_turn = 0
+        self.executed_moves = []
+
+    def reset_game(self):
         self.board = ["."] * 16  # . for empty space, false for X, true for O
         # if turn is even, then its X's turn, if turn is odd then O's turn
         self.current_turn = 0
@@ -27,7 +33,7 @@ class Board:
         else:
             return True
 
-    #outputs board in text format
+    # outputs board in text format
     def draw_board(self):
         board = self.board
         for i in range(0, 16):
@@ -42,55 +48,59 @@ class Board:
         # boolean sat formula
         curr_board = self.get_board()
 
-        """
-        #returns X if x wins O if O wins
-        return ((curr_board[0] == False and curr_board[1] == False and curr_board[2] == False and
-                 curr_board[3] == False) or
-                (curr_board[0] == True and curr_board[1] == True and curr_board[2] == True and curr_board[3] == True) or
-                (curr_board[4] == False and curr_board[5] == False and curr_board[6] == False and curr_board[
-                    7] == False) or
-                (curr_board[4] == True and curr_board[5] == True and curr_board[6] == True and curr_board[7] == True) or
-                (curr_board[8] == False and curr_board[9] == False and curr_board[10] == False and curr_board[
-                    11] == False) or
-                (curr_board[8] == True and curr_board[9] == True and curr_board[10] == True and curr_board[
-                    11] == True) or
-                (curr_board[12] == False and curr_board[13] == False and curr_board[14] == False and curr_board[
-                    15] == False) or
-                (curr_board[12] == True and curr_board[13] == True and curr_board[14] == True and curr_board[
-                    15] == True) or
-                (curr_board[4] == False and curr_board[5] == False and curr_board[6] == False and curr_board[
-                    7] == False) or
-                (curr_board[4] == True and curr_board[5] == True and curr_board[6] == True and curr_board[7] == True) or
-                (curr_board[0] == False and curr_board[4] == False and curr_board[8] == False and curr_board[
-                    12] == False) or
-                (curr_board[0] == True and curr_board[4] == True and curr_board[8] == True and curr_board[
-                    12] == True) or
-                (curr_board[1] == False and curr_board[5] == False and curr_board[9] == False and curr_board[
-                    13] == False) or
-                (curr_board[1] == True and curr_board[5] == True and curr_board[9] == True and curr_board[
-                    13] == True) or
-                (curr_board[2] == False and curr_board[6] == False and curr_board[10] == False and curr_board[
-                    14] == False) or
-                (curr_board[2] == True and curr_board[6] == True and curr_board[10] == True and curr_board[
-                    14] == True) or
-                (curr_board[3] == False and curr_board[7] == False and curr_board[11] == False and curr_board[
-                    15] == False) or
-                (curr_board[3] == True and curr_board[7] == True and curr_board[11] == True and curr_board[
-                    15] == True) or
-                (curr_board[0] == False and curr_board[5] == False and curr_board[10] == False and curr_board[
-                    15] == False) or
-                (curr_board[0] == True and curr_board[5] == True and curr_board[10] == True and curr_board[
-                    15] == True) or
-                (curr_board[3] == False and curr_board[6] == False and curr_board[9] == False and curr_board[
-                    12] == False) or
-                (curr_board[3] == True and curr_board[6] == True and curr_board[9] == True and curr_board[12] == True))
-        """
+
+        # return X if X wins
+        if (not(curr_board[0]) and not(curr_board[1]) and not(curr_board[2]) and not(curr_board[3])):
+            return "X"
+        if (not(curr_board[4]) and not(curr_board[5]) and not(curr_board[6]) and not(curr_board[7])):
+            return "X"
+        if (not(curr_board[8]) and not(curr_board[9]) and not(curr_board[10]) and not(curr_board[11])):
+            return "X"
+        if (not(curr_board[12]) and not(curr_board[13]) and not(curr_board[14]) and not(curr_board[15])):
+            return "X"
+        if (not(curr_board[0]) and not(curr_board[4]) and not(curr_board[8]) and not(curr_board[12])):
+            return "X"
+        if (not(curr_board[1]) and not(curr_board[5]) and not(curr_board[9]) and not(curr_board[13])):
+            return "X"
+        if (not(curr_board[2]) and not(curr_board[6]) and not(curr_board[10]) and not(curr_board[14])):
+            return "X"
+        if (not(curr_board[3]) and not(curr_board[7]) and not(curr_board[11]) and not(curr_board[15])):
+            return "X"
+        if (not(curr_board[0]) and not(curr_board[5]) and not(curr_board[10]) and not(curr_board[15])):
+            return "X"
+        if (not(curr_board[3]) and not(curr_board[6]) and not(curr_board[9]) and not(curr_board[12])):
+            return "X"
+
+        # return O if O wins
+        if ((curr_board[0]) and (curr_board[1]) and (curr_board[2]) and (curr_board[3])):
+            return "O"
+        if ((curr_board[4]) and (curr_board[5]) and (curr_board[6]) and (curr_board[7])):
+            return "O"
+        if ((curr_board[8]) and (curr_board[9]) and (curr_board[10]) and (curr_board[11])):
+            return "O"
+        if ((curr_board[12]) and (curr_board[13]) and (curr_board[14]) and (curr_board[15])):
+            return "O"
+        if ((curr_board[0]) and (curr_board[4]) and (curr_board[8]) and (curr_board[12])):
+            return "O"
+        if ((curr_board[1]) and (curr_board[5]) and (curr_board[9]) and (curr_board[13])):
+            return "O"
+        if ((curr_board[2]) and (curr_board[6]) and (curr_board[10]) and (curr_board[14])):
+            return "O"
+        if ((curr_board[3]) and (curr_board[7]) and (curr_board[11]) and (curr_board[15])):
+            return "O"
+        if ((curr_board[0]) and (curr_board[5]) and (curr_board[10]) and (curr_board[15])):
+            return "O"
+        if ((curr_board[3]) and (curr_board[6]) and (curr_board[9]) and (curr_board[12])):
+            return "O"
+
+
+
 
         # if none above return, check if all spots are filled, if they are, then game is a tie
         if "." in curr_board:
-            return True
-        else:
             return False
+        else:
+            return True
 
 
     # 0|1|2|3
@@ -98,53 +108,6 @@ class Board:
     # 8|9|10|11
     # 12|13|14|15
 
-    """
-    # when game is won, returns who the winner is
-    # 0 means X, 1 means O
-    def winner(self):
-        if not (self.is_won()):
-            raise Exception('Winner method called on a game that is not over')
-        else:
-            return self.current_turn % 2
-
-    # is this board in a tied state?
-    def is_tied(self):
-        return (not self.is_won()) and self.current_turn == 16
-
-    # make a move to change the current game state
-    #
-    def make_move(self, position):
-        if self.current_turn % 2 == 0:
-            self.board[position] = False
-        else:
-            self.board[position] = True
-        self.executed_moves.append(position)
-        self.current_turn += 1
-
-    def undo_last(self):
-        move_pos = self.executed_moves.pop()
-
-        self.board[move_pos] = 0
-        self.current_turn -= 1
-
-
-def minimax(board, player_val):
-    if board.is_won():
-        if board.winner() == player_val:
-            return 1
-        else:
-            return -1
-    if board.is_tied():
-        return 0
-
-    scores = []
-    for move in board.get_valid_moves():
-        board.make_move(move)
-        scores.append(minimax(board, player_val))
-        board.undo_last()
-
-    return max(scores) if player_val == board.current_turn % 2 else min(scores)
-    """
 
     # Player 'O' is max, in this case AI
     def max(self):
@@ -175,26 +138,52 @@ def minimax(board, player_val):
             return (0, 0)
 
         for i in range(0, 3):
-                if self.get_board()[i] == '.':
-                    # On the empty field player 'O' makes a move and calls Min
-                    # That's one branch of the game tree.
-                    self.get_board()[i] = 'O'
-                    (m, min_pos) = self.min()
-                    # Fixing the maxScore value if new one is higher
-                    if m > maxS:
-                        maxS = m
-                        pos = i
-                    # Setting back the field to empty
-                    self.get_board()[i] = '.'
+            if self.get_board()[i] == '.':
+                # On the empty field player 'O' makes a move and calls Min
+                # That's one branch of the game tree.
+                self.get_board()[i] = 'O'
+                (m, min_pos) = self.min()
+                # change the maxScore value if new one is higher
+                if m > maxS:
+                    maxS = m
+                    pos = i
+                # resetting back the field to empty
+                self.get_board()[i] = '.'
         return (maxS, pos)
+
+
+def min(self):
+    minS = 2
+    pos = None
+    result = self.is_over()
+
+    if result == 'X':
+        return (-1, 0)
+    elif result == 'O':
+        return (1, 0)
+    elif result == '.':
+        return (0, 0)
+
+    for i in range(0, 15):
+            if self.curr_board[i]== '.':
+                self.curr_board[i] = 'X'
+                (m, max_pos) = self.max()
+
+                if m < minS:
+                    minS = m
+                    pos = i
+
+                self.curr_board[i] = '.'
+
+    return (minS, pos)
 
 def play(self):
     while True:
         self.draw_board()
-        self.result = self.is_end()
+        self.result = self.is_over()
 
         # Printing the appropriate message if the game has ended
-        if self.result != None:
+        if self.result != False:
             if self.result == 'X':
                 print('The winner is X!')
             elif self.result == 'O':
@@ -202,22 +191,21 @@ def play(self):
             elif self.result == '.':
                 print("It's a tie!")
 
-            self.initialize_game()
+            self.reset_game()
             return
 
         # If it's player's turn
-        if self.player_turn == 'X':
+        if self.current_turn % 2 == 0: # this means it is X's turn
 
             while True:
 
                 start = time.time()
-                (m, qx, qy) = self.min()
+                (maxS, pos) = self.min()
                 end = time.time()
                 print('Evaluation time: {}s'.format(round(end - start, 7)))
-                print('Recommended move: X = {}, Y = {}'.format(qx, qy))
+                print('Recommended move: {}'.format(pos))
 
-                px = int(input('Insert the X coordinate: '))
-                py = int(input('Insert the Y coordinate: '))
+                px = int(input('Insert the desired move location: '))
 
                 (qx, qy) = (px, py)
 
