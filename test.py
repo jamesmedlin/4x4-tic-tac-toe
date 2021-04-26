@@ -6,25 +6,25 @@ class Board:
 
     def reset_game(self):
         self.board = [['.','.','.','.'],
-                              ['.','.','.','.'],
-                              ['.','.','.','.'],
-                              ['.','.','.','.']]
+                      ['.','.','.','.'],
+                      ['.','.','.','.'],
+                      ['.','.','.','.']]
 
         # Player X always plays first
-        self.player_turn = 'X'
+        self.current_turn = 'X'
 
-    def draw_board(self):
+    def board_output(self):
         for i in range(0, 4):
             for j in range(0, 4):
-                print('{}|'.format(self.board[i][j]), end=" ")
+                print('{word}|'.format(word = self.board[i][j]), end=" ")
             print()
         print()
 
     # Determines if the made move is a legal move
-    def is_move_valid(self, px, py):
-        if px < 0 or px > 3 or py < 0 or py > 3:
+    def is_move_valid(self, x_in, y_in):
+        if x_in < 0 or x_in > 3 or y_in < 0 or y_in > 3:
             return False
-        elif self.board[px][py] != '.':
+        elif self.board[x_in][y_in] != '.':
             return False
         else:
             return True
@@ -71,8 +71,8 @@ class Board:
 
     def max(self, alpha, beta):
         max_score = -2
-        px = None
-        py = None
+        x_in = None
+        y_in = None
 
         result = self.is_over()
 
@@ -90,25 +90,25 @@ class Board:
                     (m, min_i, in_j) = self.min(alpha, beta)
                     if m > max_score:
                         max_score = m
-                        px = i
-                        py = j
+                        x_in = i
+                        y_in = j
                     self.board[i][j] = '.'
 
                     # Next two ifs in Max and Min are the only difference between regular algorithm and minimax
                     if max_score >= beta:
-                        return (max_score, px, py)
+                        return (max_score, x_in, y_in)
 
                     if max_score > alpha:
                         alpha = max_score
 
-        return (max_score, px, py)
+        return (max_score, x_in, y_in)
 
     def min(self, alpha, beta):
 
         min_score = 2
 
-        qx = None
-        qy = None
+        pos_x = None
+        pos_y = None
 
         result = self.is_over()
 
@@ -126,17 +126,17 @@ class Board:
                     (m, max_i, max_j) = self.max(alpha, beta)
                     if m < min_score:
                         min_score = m
-                        qx = i
-                        qy = j
+                        pos_x = i
+                        pos_y = j
                     self.board[i][j] = '.'
 
                     if min_score <= alpha:
-                        return (min_score, qx, qy)
+                        return (min_score, pos_x, pos_y)
 
                     if min_score < beta:
                         beta = min_score
 
-        return (min_score, qx, qy)
+        return (min_score, pos_x, pos_y)
 
     def play(self):
         while True:
@@ -154,32 +154,32 @@ class Board:
                 self.reset_game()
                 return
 
-            if self.player_turn == 'X':
+            if self.current_turn == 'X':
 
                 while True:
                     start = time.time()
-                    (m, qx, qy) = self.min(-2, 2)
+                    (m, pos_x, pos_y) = self.min(-2, 2)
                     end = time.time()
                     print('Evaluation time: {}s'.format(round(end - start, 7)))
-                    print('Recommended move: X = {}, Y = {}'.format(qx, qy))
+                    print('Recommended move: X = {}, Y = {}'.format(pos_x, pos_y))
 
-                    px = int(input('Insert the X coordinate: '))
-                    py = int(input('Insert the Y coordinate: '))
+                    x_in = int(input('Insert the X coordinate: '))
+                    y_in = int(input('Insert the Y coordinate: '))
 
-                    qx = px
-                    qy = py
+                    pos_x = x_in
+                    pos_y = y_in
 
-                    if self.is_move_valid(px, py):
-                        self.board[px][py] = 'X'
-                        self.player_turn = 'O'
+                    if self.is_move_valid(x_in, y_in):
+                        self.board[x_in][y_in] = 'X'
+                        self.current_turn = 'O'
                         break
                     else:
                         print('The move is not valid! Try again.')
 
             else:
-                (m, px, py) = self.max(-2, 2)
-                self.board[px][py] = 'O'
-                self.player_turn = 'X'
+                (m, x_in, y_in) = self.max(-2, 2)
+                self.board[x_in][y_in] = 'O'
+                self.current_turn = 'X'
 
 def main():
     g = Board()
