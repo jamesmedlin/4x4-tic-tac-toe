@@ -37,81 +37,34 @@ class Board:
    # Return cases: X - X wins, O - O wins, . - draw, None - game not finished
    def is_over(self):
 
-       boolean_array = [['.', '.', '.', '.'],
-                     ['.', '.', '.', '.'],
-                     ['.', '.', '.', '.'],
-                     ['.', '.', '.', '.']]
-
+       # Checking combinations of horizontal wins
        for i in range(0, 4):
-           for j in range(0, 4):
-               if self.board[i][j] == 'X':
-                   boolean_array[i][j] = False
-               if self.board[i][j] == 'O':
-                   boolean_array[i][j] = True
-               else:
-                   boolean_array[i][j] = '.'
+           if self.board[i] == ['O', 'O', 'O', 'O']:
+               return 'O'
+           elif self.board[i] == ['X', 'X', 'X', 'X']:
+               return 'X'
 
-               # return O if O wins
-               if ((boolean_array[0][0] != ".") and
-                       (boolean_array[0][0] == boolean_array[0][1] == boolean_array[0][2] == boolean_array[0][3])):
-                   if (not (boolean_array[0][0])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[1][0] != ".") and
-                       (boolean_array[1][0] == boolean_array[1][1] == boolean_array[1][2] == boolean_array[1][3])):
-                   if (not (boolean_array[1][0])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[2][0] != ".") and
-                       (boolean_array[2][0] == boolean_array[2][1] == boolean_array[2][2] == boolean_array[2][3])):
-                   if (not (boolean_array[2][0])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[3][0] != ".") and
-                       (boolean_array[3][0] == boolean_array[3][1] == boolean_array[3][2] == boolean_array[3][3])):
-                   if (not (boolean_array[3][0])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[0][0] != ".")
-                       and (boolean_array[0][0] == boolean_array[1][0] == boolean_array[2][0] == boolean_array[3][0])):
-                   if (not (boolean_array[0][0])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[0][1] != ".") and
-                       (boolean_array[0][1] == boolean_array[1][1] == boolean_array[2][1] == boolean_array[3][1])):
-                   if (not (boolean_array[0][1])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[0][2] != ".") and
-                       (boolean_array[0][2] == boolean_array[1][2] == (boolean_array[2][2]) == (boolean_array[2][3]))):
-                   if (not (boolean_array[0][2])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[0][3] != ".") and
-                       (boolean_array[0][3] == boolean_array[1][3] == boolean_array[2][3] == boolean_array[3][3])):
-                   if (not (boolean_array[0][3])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[0][0] != ".") and
-                       (boolean_array[0][0] == boolean_array[1][1] == boolean_array[2][2] == boolean_array[3][3])):
-                   if (not (boolean_array[0][0])):
-                       return "X"
-                   else:
-                       return "O"
-               if ((boolean_array[0][3] != ".") and
-                       (boolean_array[0][3] == boolean_array[1][2] == boolean_array[2][1] == boolean_array[3][0])):
-                   if (not (boolean_array[3])):
-                       return "X"
-                   else:
-                       return "O"
+       # Checking all vertical win conditions
+       for i in range(0, 4):
+           if (self.board[0][i] != '.' and
+                   self.board[0][i] == self.board[1][i] and
+                   self.board[0][i] == self.board[2][i] and
+                   self.board[0][i] == self.board[3][i]):
+               return self.board[0][i]
+
+       # First diagonal check
+       if (self.board[0][3] != '.' and
+               self.board[0][3] == self.board[1][2] and
+               self.board[0][3] == self.board[2][1] and
+               self.board[0][3] == self.board[3][0]):
+           return self.board[0][3]
+
+       # Second diagonal check
+       if (self.board[0][0] != '.' and
+               self.board[0][0] == self.board[1][1] and
+               self.board[0][0] == self.board[2][2] and
+               self.board[0][0] == self.board[3][3]):
+           return self.board[0][0]
 
        # Draw check: if nobody has won yet, check if board has any empty spaces left
        for i in range(0, 4):
@@ -227,10 +180,10 @@ class Board:
                    end = time.time()
                    # Prints the results and the time of the search
                    print('Move computation time: {} seconds'.format(end - start))
-                   print('Best computed move: X = {}, Y = {}'.format(pos_x, pos_y))
+                   print('Best computed move: Y = {}, X = {}'.format(pos_x, pos_y))
                    # Prompt for user inputs
-                   x_in = int(input('Enter the X coordinate: '))
-                   y_in = int(input('Enter the Y coordinate: '))
+                   x_in = int(input('Enter the Y coordinate: '))
+                   y_in = int(input('Enter the X coordinate: '))
 
                    pos_x = x_in
                    pos_y = y_in
